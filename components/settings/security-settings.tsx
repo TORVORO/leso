@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
 import { CheckCircle2, LockIcon, Shield, SmartphoneIcon, Clock, AlertTriangle, KeyIcon, InfoIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
