@@ -5,10 +5,9 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: { unoptimized: true },
-  webpack: (config, { dev }) => {
-    if (dev) {
-      config.cache = false;
-    }
+  webpack: (config) => {
+    // Disable webpack cache to prevent ENOENT errors
+    config.cache = false;
     return config;
   },
 };

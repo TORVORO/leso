@@ -1,8 +1,8 @@
-import { toast } from "@/components/ui/use-toast";
+import { toast as sonnerToast } from "sonner";
 
 export function useToast() {
   return {
-    toast,
-    dismiss: toast.dismiss,
+    toast: sonnerToast,
+    dismiss: sonnerToast.dismiss,
   };
 }
