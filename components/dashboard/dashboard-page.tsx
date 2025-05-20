@@ -1,7 +1,14 @@
-"use client";
+'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAuth } from '@clerk/nextjs'; // Added
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RecentLeases } from '@/components/dashboard/recent-leases';
 import { ExpiringLeases } from '@/components/dashboard/expiring-leases';
@@ -10,21 +17,48 @@ import { LeasesByTypeChart } from '@/components/dashboard/leases-by-type-chart';
 import { LeasesSummaryCards } from '@/components/dashboard/leases-summary-cards';
 import { LeaseActivityFeed } from '@/components/dashboard/lease-activity-feed';
 import { Button } from '@/components/ui/button';
-import { PlusIcon, ArrowRightIcon, FileTextIcon, UploadIcon } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import {
+  PlusIcon,
+  ArrowRightIcon,
+  FileTextIcon,
+  UploadIcon,
+} from 'lucide-react';
+import { useToast } from '@/hooks/use-toast'; // Assuming this is a custom hook, ensure path is correct
 
 export function DashboardPage() {
   const [activeTab, setActiveTab] = useState('overview');
   const { toast } = useToast();
+  const { isLoaded, isSignedIn } = useAuth(); // Added
 
   const showWelcomeToast = () => {
     toast({
-      title: "Welcome to LeaseSync! 👋",
-      description: "Your modern lease accounting solution is ready to use.",
+      title: 'Welcome to LeaseSync! 👋',
+      description: 'Your modern lease accounting solution is ready to use.',
       duration: 5000,
     });
   };
 
+  // Added: Loading state while Clerk checks authentication
+  if (!isLoaded) {
+    return (
+      <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
+        <p className="text-lg text-gray-600">Loading dashboard...</p>
+      </div>
+    );
+  }
+
+  // Added: Check if user is signed in (middleware should handle unauth access, but good for robustness)
+  if (!isSignedIn) {
+    // This case should ideally be handled by middleware redirecting to sign-in.
+    // You might want to redirect client-side here as a fallback or show an error.
+    return (
+      <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
+        <p className="text-lg text-red-600">Access Denied. Please sign in.</p>
+      </div>
+    );
+  }
+
+  // Original dashboard content, now rendered conditionally
   return (
     <div className="space-y-6 animate-in fade-in-50 duration-500">
       <div className="flex items-center justify-between">
@@ -46,15 +80,17 @@ export function DashboardPage() {
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="overview" className="space-y-6">
           <LeasesSummaryCards />
-          
+
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
             <Card className="lg:col-span-4">
               <CardHeader>
                 <CardTitle>Lease Statistics</CardTitle>
-                <CardDescription>Monthly lease expenses and assets over time</CardDescription>
+                <CardDescription>
+                  Monthly lease expenses and assets over time
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <LeaseStatisticsChart />
@@ -63,7 +99,9 @@ export function DashboardPage() {
             <Card className="lg:col-span-3">
               <CardHeader>
                 <CardTitle>Leases by Type</CardTitle>
-                <CardDescription>Distribution of lease types in portfolio</CardDescription>
+                <CardDescription>
+                  Distribution of lease types in portfolio
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <LeasesByTypeChart />
@@ -76,7 +114,9 @@ export function DashboardPage() {
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                   <CardTitle>Recent Leases</CardTitle>
-                  <CardDescription>Recently added or modified leases</CardDescription>
+                  <CardDescription>
+                    Recently added or modified leases
+                  </CardDescription>
                 </div>
                 <Button variant="ghost" size="sm" className="gap-1">
                   View all <ArrowRightIcon className="h-4 w-4" />
@@ -90,7 +130,9 @@ export function DashboardPage() {
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                   <CardTitle>Expiring Leases</CardTitle>
-                  <CardDescription>Leases expiring within 90 days</CardDescription>
+                  <CardDescription>
+                    Leases expiring within 90 days
+                  </CardDescription>
                 </div>
                 <Button variant="ghost" size="sm" className="gap-1">
                   View all <ArrowRightIcon className="h-4 w-4" />
@@ -102,13 +144,15 @@ export function DashboardPage() {
             </Card>
           </div>
         </TabsContent>
-        
+
         <TabsContent value="analytics" className="space-y-6">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             <Card className="lg:col-span-2">
               <CardHeader>
                 <CardTitle>Lease Activity</CardTitle>
-                <CardDescription>Recent activity across your leases</CardDescription>
+                <CardDescription>
+                  Recent activity across your leases
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <LeaseActivityFeed />
