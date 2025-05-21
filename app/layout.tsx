@@ -1,11 +1,11 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { ClerkProvider } from '@clerk/nextjs';
 import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import { AppLayout } from '@/components/app-layout';
+import { ClerkProviderWrapper } from '@/components/providers/clerk-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,9 +20,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
-        <body className={cn(inter.className, 'antialiased')}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={cn(inter.className, 'antialiased')}>
+        <ClerkProviderWrapper>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -32,8 +32,8 @@ export default function RootLayout({
             <AppLayout>{children}</AppLayout>
             <Toaster />
           </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProviderWrapper>
+      </body>
+    </html>
   );
 }
