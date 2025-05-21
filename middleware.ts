@@ -1,5 +1,5 @@
 import {
-  clerkMiddleware,
+  withClerkMiddleware,
   type ClerkMiddlewareAuthObject,
 } from '@clerk/nextjs/server';
 import { type NextRequest, NextResponse } from 'next/server';
@@ -15,7 +15,7 @@ function isPublicRoute(pathname: string): boolean {
   return PUBLIC_ROUTE_REGEXES.some((regex) => regex.test(pathname));
 }
 
-export default clerkMiddleware(
+export default withClerkMiddleware(
   (auth: ClerkMiddlewareAuthObject, req: NextRequest) => {
     const { pathname } = req.nextUrl;
 
