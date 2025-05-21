@@ -16,7 +16,9 @@
                 "OPENROUTER_API_KEY": "OPENROUTER_API_KEY_HERE",
                 "MISTRAL_API_KEY": "MISTRAL_API_KEY_HERE",
                 "AZURE_OPENAI_API_KEY": "AZURE_OPENAI_API_KEY_HERE",
-                "OLLAMA_API_KEY": "OLLAMA_API_KEY_HERE"
+                "OLLAMA_API_KEY": "OLLAMA_API_KEY_HERE",
+                "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_bG9naWNhbC1mbG91bmRlci0zMS5jbGVyay5hY2NvdW50cy5kZXYk",
+                "CLERK_SECRET_KEY": "sk_test_5CvImRH2YnjORLdqsFZfklqUsXx2H6eGWToK0wZeLg"
             }
         }
     }
